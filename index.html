@@ -78,10 +78,8 @@
                     <div>
                         <div class="brand">Cupra</div>
                         <div class="title">Konfigurator koloru</div>
-                        <p class="muted">Wybierz lakier nadwozia. Kliknij próbkę lub użyj własnego koloru.</p>
+                        <p class="muted">Wybierz lakier nadwozia.</p>
                         <div class="swatches" id="swatches" role="listbox" aria-label="Paleta kolorów">
-                            <button class="swatch" style="background:#ffffff" title="White" data-color="#ffffff" aria-label="White"></button>
-                            <button class="swatch" style="background:#d9d9d9" title="Silver" data-color="#d9d9d9" aria-label="Silver"></button>
                             <button class="swatch" style="background:#454a51" title="Gray" data-color="#454a51" aria-label="Gray"></button>
                             <button class="swatch" style="background:#7a0d0e" title="Burgundy" data-color="#7a0d0e" aria-label="Burgundy"></button>
                             <button class="swatch" style="background:#0b3a6d" title="Navy" data-color="#0b3a6d" aria-label="Navy"></button>
@@ -90,8 +88,12 @@
                             <button class="swatch" style="background:#b41d31" title="Red" data-color="#b41d31" aria-label="Red"></button>
                             <button class="swatch" style="background:#1a84d6" title="Blue" data-color="#1a84d6" aria-label="Blue"></button>
                         </div>
-                        <div class="picker">
-                            <input id="customColor" type="color" value="#b41d31" aria-label="Wybierz własny kolor">
+                        <div class="mt-3">
+                            <p>Lub sam wybierz kolor</p>
+                        </div>
+                        <div class="picker" style="cursor: pointer;">
+
+                            <input id="customColor" type="color" style="cursor: pointer" value="#b41d31" aria-label="Wybierz własny kolor">
                             <div>
                                 <div class="muted">Kolor</div>
                                 <div class="code" id="hexOut">#b41d31</div>
