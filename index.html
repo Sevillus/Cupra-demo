@@ -54,9 +54,55 @@
         }
         .btn:hover{background:rgba(255,255,255,.12); transform:translateY(-1px)}
         .note{font-size:12px; color:var(--muted); margin-top:10px}
-        svg{isolation:isolate}
-        @media (max-width: 991px){
+        /* Accordion styles */
+        .acc-header{
+            width:100%; text-align:left; display:flex; align-items:center; justify-content:space-between;
+            padding:12px 14px; border:1px solid var(--stroke); border-radius:12px; background:rgba(255,255,255,.06);
+            color:#fff; font-weight:700; cursor:pointer; margin:10px 0; letter-spacing:.02em;
+        }
+        .acc-header:hover{background:rgba(255,255,255,.1)}
+        .acc-header[aria-expanded="true"] .chev{transform:rotate(90deg)}
+        .chev{transition:transform .2s ease}
+        .acc-panel{border:1px solid var(--stroke); border-radius:12px; padding:14px; background:rgba(0,0,0,.2); margin:8px 0 14px}
+        .pkg-row{display:flex; gap:10px; flex-wrap:wrap; margin-top:8px}
+        .btn-primary{background:linear-gradient(180deg, #2d7fff, #1663df); border-color:#2d7fff}
+        .btn-primary:hover{background:linear-gradient(180deg, #3489ff, #1a6df0)}
+        svg{isolation:isolate; width:100%; height:auto; display:block}
+        /* Prevent horizontal scroll on small screens */
+        html, body { overflow-x: hidden; }
+
+        @media (max-width: 1199.98px){
+            .title{font-size:24px}
+        }
+        @media (max-width: 991.98px){
             .panel{border-left:none; border-top:1px solid var(--stroke)}
+            .title{font-size:22px}
+        }
+        @media (max-width: 767.98px){
+            /* So the outer spacing is comfortable on phones */
+            .container-fluid.p-5{padding:1.25rem !important}
+            .panel{padding:20px}
+            .acc-header{padding:12px 14px}
+            .acc-panel{padding:12px}
+            /* Larger touch targets */
+            .swatch{width:26px; height:26px; border-radius:5px}
+            .picker input[type="color"]{width:52px; height:52px; border-radius:14px}
+            .btn{padding:12px 16px; font-size:16px}
+            /* Stack package buttons full-width */
+            .pkg-row .btn{flex:1 1 100%}
+            /* Constrain SVG height to keep controls in view */
+            svg{max-height:60vh}
+        }
+        @media (max-width: 575.98px){
+            .title{font-size:20px}
+            .brand{font-size:14px}
+        }
+
+        .btn:disabled{
+            cursor: not-allowed;
+        }
+        .btn:hover{
+            color: white;
         }
     </style>
 </head>
@@ -77,26 +123,56 @@
                 <div class="col-lg-4 panel d-flex flex-column justify-content-between">
                     <div>
                         <div class="brand">Cupra</div>
-                        <div class="title">Konfigurator koloru</div>
-                        <p class="muted">Wybierz lakier nadwozia.</p>
-                        <div class="swatches" id="swatches" role="listbox" aria-label="Paleta kolorów">
-                            <button class="swatch" style="background:#454a51" title="Gray" data-color="#454a51" aria-label="Gray"></button>
-                            <button class="swatch" style="background:#7a0d0e" title="Burgundy" data-color="#7a0d0e" aria-label="Burgundy"></button>
-                            <button class="swatch" style="background:#0b3a6d" title="Navy" data-color="#0b3a6d" aria-label="Navy"></button>
-                            <button class="swatch" style="background:#165b33" title="Green" data-color="#165b33" aria-label="Green"></button>
-                            <button class="swatch" style="background:#c7702f" title="Copper" data-color="#c7702f" aria-label="Copper"></button>
-                            <button class="swatch" style="background:#b41d31" title="Red" data-color="#b41d31" aria-label="Red"></button>
-                            <button class="swatch" style="background:#1a84d6" title="Blue" data-color="#1a84d6" aria-label="Blue"></button>
-                        </div>
-                        <div class="mt-3">
-                            <p>Lub sam wybierz kolor</p>
-                        </div>
-                        <div class="picker" style="cursor: pointer;">
+                        <div class="title">Konfigurator</div>
 
-                            <input id="customColor" type="color" style="cursor: pointer" value="#b41d31" aria-label="Wybierz własny kolor">
-                            <div>
-                                <div class="muted">Kolor</div>
-                                <div class="code" id="hexOut">#b41d31</div>
+                        <!-- Accordion: Paint -->
+                        <div class="accordion">
+                            <button id="paintHeader" class="acc-header" aria-expanded="true" aria-controls="paintPanel">
+                                <span>Kolor lakieru</span>
+                                <span class="chev">▸</span>
+                            </button>
+                            <div id="paintPanel" class="acc-panel">
+                                <p class="muted">Wybierz lakier nadwozia.</p>
+                                <div class="swatches" id="swatches" role="listbox" aria-label="Paleta kolorów">
+                                    <button class="swatch" style="background:#454a51" title="Gray" data-color="#454a51" aria-label="Gray"></button>
+                                    <button class="swatch" style="background:#7a0d0e" title="Burgundy" data-color="#7a0d0e" aria-label="Burgundy"></button>
+                                    <button class="swatch" style="background:#0b3a6d" title="Navy" data-color="#0b3a6d" aria-label="Navy"></button>
+                                    <button class="swatch" style="background:#165b33" title="Green" data-color="#165b33" aria-label="Green"></button>
+                                    <button class="swatch" style="background:#c7702f" title="Copper" data-color="#c7702f" aria-label="Copper"></button>
+                                    <button class="swatch" style="background:#b41d31" title="Red" data-color="#b41d31" aria-label="Red"></button>
+                                    <button class="swatch" style="background:#1a84d6" title="Blue" data-color="#1a84d6" aria-label="Blue"></button>
+                                </div>
+                                <div class="mt-3">
+                                    <p>Lub sam wybierz kolor</p>
+                                </div>
+                                <div class="picker" style="cursor: pointer;">
+                                    <input id="customColor" type="color" style="cursor: pointer" value="#b41d31" aria-label="Wybierz własny kolor">
+                                    <div>
+                                        <div class="muted">Kolor</div>
+                                        <div class="code" id="hexOut">#b41d31</div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- Accordion: PPF -->
+                        <div class="accordion">
+                            <button id="ppfHeader" class="acc-header" aria-expanded="false" aria-controls="ppfPanel">
+                                <span>Zabezpieczenie folią (PPF)</span>
+                                <span class="chev">▸</span>
+                            </button>
+                            <div id="ppfPanel" class="acc-panel" hidden>
+                                <div class="muted">Wybierz pakiet</div>
+                                <div class="pkg-row">
+                                    <button class="pkg btn" id="btnPPFStandard" disabled title="Wkrótce">
+                                        Pakiet standard — 999 zł
+                                    </button>
+                                    <button class="pkg btn btn-primary" id="btnPPFPremium">
+                                        Pakiet premium — 5399 zł
+                                    </button>
+                                </div>
+                                <p class="note">Pakiet standard niedostępny. Premium dodaje neonową poświatę wokół karoserii (auto w kolorze podstawowym).</p>
                             </div>
                         </div>
                     </div>
@@ -114,6 +190,13 @@
   const swatches = document.getElementById('swatches');
   const resetBtn = document.getElementById('resetBtn');
   const blendSelect = document.getElementById('blendMode');
+  // Accordion and PPF buttons
+  const paintHeader = document.getElementById('paintHeader');
+  const paintPanel = document.getElementById('paintPanel');
+  const ppfHeader = document.getElementById('ppfHeader');
+  const ppfPanel = document.getElementById('ppfPanel');
+  const btnPPFStandard = document.getElementById('btnPPFStandard');
+  const btnPPFPremium = document.getElementById('btnPPFPremium');
 
   if(!svg){ return; }
 
@@ -172,6 +255,46 @@
     });
   }
 
+  // Apply or remove neon glow around mask (PPF Premium)
+  function applyNeonGlow(enabled){
+    const neon = '#19b9ff';
+    paintParts.forEach(el => {
+      if(enabled){
+        el.setAttribute('fill','none');
+        el.style.mixBlendMode = 'normal';
+        el.setAttribute('stroke', neon);
+        el.setAttribute('stroke-width', '3');
+        el.setAttribute('stroke-linejoin', 'round');
+        el.setAttribute('stroke-linecap', 'round');
+        // Soft multi-drop-shadow glow
+        el.style.filter = 'drop-shadow(0 0 6px '+neon+') drop-shadow(0 0 12px '+neon+') drop-shadow(0 0 18px '+neon+')';
+      } else {
+        el.removeAttribute('stroke');
+        el.removeAttribute('stroke-width');
+        el.removeAttribute('stroke-linejoin');
+        el.removeAttribute('stroke-linecap');
+        el.style.filter = '';
+      }
+    });
+  }
+
+  function setColorControlsEnabled(enabled){
+    // Enable/disable palette, picker and blend mode when PPF Premium is active
+    if(swatches){
+      swatches.style.pointerEvents = enabled ? 'auto' : 'none';
+      swatches.style.opacity = enabled ? '1' : '.5';
+    }
+    if(picker){
+      picker.disabled = !enabled;
+      picker.style.opacity = enabled ? '1' : '.6';
+      picker.style.cursor = enabled ? 'pointer' : 'not-allowed';
+    }
+    if(blendSelect){
+      blendSelect.disabled = !enabled;
+      blendSelect.style.opacity = enabled ? '1' : '.6';
+    }
+  }
+
   // Initial state: no color overlay — show default car without mask
   paintParts.forEach(el => {
     el.setAttribute('fill', 'none');
@@ -199,17 +322,82 @@
     });
   }
 
+  // PPF behavior with buttons/accordion
+  function clearPaintOverlay(){
+    paintParts.forEach((el)=>{
+      el.setAttribute('fill','none');
+      el.style.mixBlendMode = 'normal';
+    });
+    hexOut.textContent = '—';
+    if(blendSelect){ blendSelect.value = 'normal'; }
+    Array.from(swatches.querySelectorAll('.swatch')).forEach(btn => btn.dataset.selected = 'false');
+  }
+  function enablePPFPremium(){
+    // Show base color (no paint), then neon glow
+    clearPaintOverlay();
+    setColorControlsEnabled(false);
+    applyNeonGlow(true);
+  }
+  function disablePPF(){
+    applyNeonGlow(false);
+    setColorControlsEnabled(true);
+  }
+
+  // Accordion logic
+  function toggleSection(header, panel){
+    const expanded = header.getAttribute('aria-expanded') === 'true';
+    if(expanded){
+      header.setAttribute('aria-expanded','false');
+      panel.hidden = true;
+    } else {
+      header.setAttribute('aria-expanded','true');
+      panel.hidden = false;
+    }
+  }
+
+  if(paintHeader && paintPanel){
+    paintHeader.addEventListener('click', ()=>{
+      const willOpen = paintHeader.getAttribute('aria-expanded') !== 'true';
+      toggleSection(paintHeader, paintPanel);
+      if(willOpen){
+        // Leaving PPF mode when going to paint
+        disablePPF();
+        // Collapse the PPF tab when Paint opens
+        if(ppfHeader && ppfPanel){
+          ppfHeader.setAttribute('aria-expanded','false');
+          ppfPanel.hidden = true;
+        }
+      }
+    });
+  }
+  if(ppfHeader && ppfPanel){
+    ppfHeader.addEventListener('click', ()=>{
+      const willOpen = ppfHeader.getAttribute('aria-expanded') !== 'true';
+      toggleSection(ppfHeader, ppfPanel);
+      if(willOpen){
+        // Auto-reset paint when opening PPF tab
+        clearPaintOverlay();
+        // Collapse the Paint tab when PPF opens
+        if(paintHeader && paintPanel){
+          paintHeader.setAttribute('aria-expanded','false');
+          paintPanel.hidden = true;
+        }
+      }
+    });
+  }
+
+  if(btnPPFPremium){
+    btnPPFPremium.addEventListener('click', ()=>{
+      enablePPFPremium();
+    });
+  }
+
   // Reset
   if(resetBtn){
     resetBtn.addEventListener('click', ()=>{
-      // Hide mask again to show default car color
-      paintParts.forEach((el)=>{
-        el.setAttribute('fill', 'none');
-        el.style.mixBlendMode = 'normal';
-      });
-      hexOut.textContent = '—';
-      if(blendSelect){ blendSelect.value = 'normal'; }
-      Array.from(swatches.querySelectorAll('.swatch')).forEach(btn => btn.dataset.selected = 'false');
+      // Exit PPF and hide mask again to show default car color
+      disablePPF();
+      clearPaintOverlay();
     });
   }
 })();
